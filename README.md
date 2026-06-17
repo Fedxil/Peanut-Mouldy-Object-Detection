@@ -1,4 +1,4 @@
-Proyek ini menggunakan YOLOv8 untuk mendeteksi kacang yang berjamur (Moldy) dan yang sehat (NotMoldy).
+Proyek ini menggunakan YOLOv8 untuk mendeteksi kacang yang berjamur (Moldy) dan yang sehat (NotMoldy), lengkap dengan antarmuka web berbasis Flask.
 
 ## Langkah-langkah Penggunaan (Steps):
 
@@ -23,4 +23,25 @@ Proyek ini menggunakan YOLOv8 untuk mendeteksi kacang yang berjamur (Moldy) dan 
 
 6. **Penyimpanan**:
    - Model yang sudah dilatih dikirim kembali ke Google Drive dan di-upload ke repository GitHub ini.
+
+7. **Menjalankan Interface (Flask Web App)**:
+   - **Persiapan Environment**:
+     Pastikan Anda memiliki Python terinstal, lalu buat virtual environment:
+     ```bash
+     python -m venv env
+     source env/bin/activate  # Untuk Linux/macOS
+     env\\Scripts\\activate     # Untuk Windows
+     ```
+   - **Instalasi Library**:
+     Instal dependensi yang diperlukan:
+     ```bash
+     pip install flask ultralytics opencv-python pillow
+     ```
+   - **Struktur Folder**:
+     Pastikan file `app.py` berada di root, folder `templates/` berisi file HTML, dan model `best.pt` berada di path yang sesuai.
+   - **Menjalankan Aplikasi**:
+     ```bash
+     python app.py
+     ```
+     Buka browser dan akses `http://127.0.0.1:5000`.
 """
