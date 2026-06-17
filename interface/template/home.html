@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peanut Quality Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2d3436;
+        --accent: #fab1a0;
+        --bg: #f5f6fa;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--bg);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* Header Section */
+      header {
+        width: 100%;
+        height: 200px;
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("http://googleusercontent.com/image_collection/image_retrieval/11946158339524214568");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: -50px;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        text-align: center;
+      }
+
+      /* Main Dashboard Container */
+      .container {
+        width: 90%;
+        max-width: 1000px;
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        z-index: 2;
+      }
+
+      .upload-section {
+        border-right: 1px solid #eee;
+        padding-right: 20px;
+      }
+
+      h2 {
+        color: var(--primary);
+        font-weight: 600;
+        margin-top: 0;
+      }
+      p {
+        color: #636e72;
+        font-size: 0.9rem;
+        margin-bottom: 25px;
+      }
+
+      /* Style Form & Button */
+      input[type="file"] {
+        display: block;
+        margin-bottom: 20px;
+        width: 100%;
+        padding: 10px;
+        border: 2px dashed #dfe6e9;
+        border-radius: 10px;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      button:hover {
+        background-color: #000;
+        transform: translateY(-2px);
+      }
+
+      /* Image Display & Stats */
+      .image-card {
+        background: #fdfdfd;
+        border: 1px solid #eee;
+        border-radius: 15px;
+        overflow: hidden;
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+
+      .image-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        background: #55efc4;
+        color: #00b894;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .error-badge {
+        background: #ff7675;
+        color: white;
+      }
+
+      .stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+        font-weight: 600;
+      }
+      .stat-moldy {
+        color: #d63031;
+      }
+      .stat-healthy {
+        color: #00b894;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+        .upload-section {
+          border-right: none;
+          padding-right: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Peanut Quality Detector</h1>
+    </header>
+
+    <div class="container">
+      <div class="upload-section">
+        <h2>Analisis AI</h2>
+        <p>
+          Unggah foto kacang tanah untuk mendeteksi jamur (Moldy) secara
+          otomatis menggunakan model YOLO.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+          <input type="file" name="file" accept=".jpg, .jpeg, .png" required />
+          <button type="submit">Mulai Deteksi 🚀</button>
+        </form>
+
+        {% if error %}
+        <div class="status-badge error-badge" style="margin-top: 20px">
+          Error: {{ error }}
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 40px">
+          <h3 style="font-size: 1rem">Cara Penggunaan:</h3>
+          <ul style="font-size: 0.85rem; color: #636e72; padding-left: 20px">
+            <li>Gunakan foto dengan pencahayaan terang.</li>
+            <li>Satu foto bisa berisi banyak kacang.</li>
+            <li>Hasil akan muncul di sisi kanan dashboard.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="result-section">
+        <h2>Hasil Deteksi</h2>
+
+        {% if image_data %}
+        <div class="status-badge">Berhasil Dianalisis</div>
+        <div class="image-card">
+          <img
+            src="data:image/jpeg;base64,{{ image_data }}"
+            alt="Hasil Deteksi"
+          />
+        </div>
+        <div class="stats-container">
+          <div class="stat-moldy">🔴 Busuk: {{ count_moldy }}</div>
+          <div class="stat-healthy">🟢 Sehat: {{ count_healthy }}</div>
+        </div>
+        {% else %}
+        <div
+          style="
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #eee;
+            border-radius: 15px;
+            color: #b2bec3;
+          "
+        >
+          Belum ada data untuk ditampilkan
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <footer
+      style="
+        margin-top: 40px;
+        color: #b2bec3;
+        font-size: 0.8rem;
+        padding-bottom: 20px;
+      "
+    >
+      © 2026 Project UAS Peanut Quality Detection
+    </footer>
+  </body>
+</html>
